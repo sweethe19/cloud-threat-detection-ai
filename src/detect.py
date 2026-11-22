@@ -66,6 +66,8 @@ ALL_RULES = [
 
 if __name__ == "__main__":
     df = prepare(pd.read_pickle("data/flaws.pkl"))
+    NOISY_SOURCES = "amazonaws.com|AWS Internal"
+    df = df[~df["sourceIPAddress"].astype(str).str.contains(NOISY_SOURCES)]
     alerts = pd.concat([rule(df) for rule in ALL_RULES], ignore_index=True)
     alerts.to_csv("results/alerts.csv", index=False)
 
