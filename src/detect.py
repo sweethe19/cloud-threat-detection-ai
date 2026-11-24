@@ -26,7 +26,7 @@ def summarize(rows, rule, attack_id):
 
 def rule_compute_hijacking(df, threshold=100):
     rows = df[df["eventName"] == "RunInstances"]
-    g = summarize(rows, "Mass RunInstances from one source", "T1496")
+    g = summarize(rows, "Mass RunInstances from one source", "T1496.001")
     return g[g["event_count"] >= threshold]
 
 
