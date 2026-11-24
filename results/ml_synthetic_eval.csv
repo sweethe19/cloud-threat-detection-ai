@@ -1,0 +1,11 @@
+id,scenario,ml_detected
+S01,Cryptomining: 300 RunInstances in under an hour,False
+S02,Root account used for 5 actions,False
+S03,Attacker stops and deletes CloudTrail,False
+S04,80 AccessDenied errors in one hour,False
+S05,25 different recon calls in one hour,False
+S06,Low-and-slow cryptomining (20 launches over 10 hours),False
+S07,Persistence: new user and access key created,False
+S08,EBS snapshot shared publicly,False
+S09,Privilege escalation: AdministratorAccess attached,False
+S10,Console login without MFA,False
