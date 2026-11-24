@@ -1,11 +1,11 @@
 id,scenario,detected,rules
-S01,Cryptomining: 300 RunInstances in under an hour,True,Mass RunInstances from one source
+S01,Cryptomining: 300 RunInstances in under an hour,True,"Mass RunInstances from one source, RunInstances volume per day from one source"
 S02,Root account used for 5 actions,True,Root account used
 S03,Attacker stops and deletes CloudTrail,True,CloudTrail logging modified or stopped
 S04,80 AccessDenied errors in one hour,True,Burst of access-denied errors
 S05,25 different recon calls in one hour,True,Many different recon calls in one hour
-S06,Low-and-slow cryptomining (20 launches over 10 hours),False,
-S07,Persistence: new user and access key created,False,
-S08,EBS snapshot shared publicly,False,
-S09,Privilege escalation: AdministratorAccess attached,False,
-S10,Console login without MFA,False,
+S06,Low-and-slow cryptomining (20 launches over 10 hours),True,RunInstances volume per day from one source
+S07,Persistence: new user and access key created,True,"New IAM user, key or password created"
+S08,EBS snapshot shared publicly,True,Snapshot or image shared publicly
+S09,Privilege escalation: AdministratorAccess attached,True,AdministratorAccess policy attached
+S10,Console login without MFA,True,Console login without MFA

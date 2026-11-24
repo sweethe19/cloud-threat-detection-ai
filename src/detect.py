@@ -55,6 +55,47 @@ def rule_recon_enumeration(df, threshold=20):
     g.insert(1, "attack_id", "T1580")
     return g[g["event_count"] >= threshold]
 
+def _has(series, text):
+    return series.astype(str).str.contains(text, regex=False)
+
+
+def rule_slow_compute_hijacking(df, threshold=15):
+    rows = df[df["eventName"] == "RunInstances"].copy()
+    rows["day"] = rows["eventTime"].dt.floor("D")
+    g = (rows.groupby(["day", "sourceIPAddress", "identityName"], dropna=False)
+         .size().reset_index(name="event_count"))
+    g = g[g["event_count"] >= threshold]
+    g.insert(0, "rule", "RunInstances volume per day from one source")
+    g.insert(1, "attack_id", "T1496.001")
+    return g
+
+
+def rule_new_credentials(df):
+    names = ["CreateUser", "CreateAccessKey", "CreateLoginProfile", "UpdateLoginProfile"]
+    rows = df[df["eventName"].isin(names) & (df["errorCode"] == "")]
+    return summarize(rows, "New IAM user, key or password created", "T1098.001")
+
+
+def rule_public_snapshot(df):
+    rows = df[df["eventName"].isin(["ModifySnapshotAttribute", "ModifyImageAttribute"])]
+    rows = rows[_has(rows["requestParameters"], "'group': 'all'")]
+    return summarize(rows, "Snapshot or image shared publicly", "T1537")
+
+
+def rule_admin_policy_attached(df):
+    names = ["AttachUserPolicy", "AttachRolePolicy", "AttachGroupPolicy"]
+    rows = df[df["eventName"].isin(names)]
+    rows = rows[_has(rows["requestParameters"], "AdministratorAccess")]
+    return summarize(rows, "AdministratorAccess policy attached", "T1098.003")
+
+
+def rule_console_login_no_mfa(df):
+    rows = df[df["eventName"] == "ConsoleLogin"]
+    no_mfa = rows["additionalEventData"].apply(
+        lambda x: isinstance(x, dict) and x.get("MFAUsed") == "No")
+    success = rows["responseElements"].apply(
+        lambda x: isinstance(x, dict) and x.get("ConsoleLogin") == "Success")
+    return summarize(rows[no_mfa & success], "Console login without MFA", "T1078.004")
 
 ALL_RULES = [
     rule_compute_hijacking,
@@ -62,6 +103,11 @@ ALL_RULES = [
     rule_logging_tampering,
     rule_access_denied_burst,
     rule_recon_enumeration,
+    rule_slow_compute_hijacking,
+    rule_new_credentials,
+    rule_public_snapshot,
+    rule_admin_policy_attached,
+    rule_console_login_no_mfa,
 ]
 
 if __name__ == "__main__":
