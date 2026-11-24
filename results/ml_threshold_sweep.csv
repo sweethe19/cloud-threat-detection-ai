@@ -1,0 +1,5 @@
+baseline_percentile,synthetic_detected,baseline_rows_flagged
+90,3/10,1724
+95,2/10,803
+97,0/10,518
+99,0/10,173

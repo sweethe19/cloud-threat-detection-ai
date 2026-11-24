@@ -1,11 +1,11 @@
-id,scenario,ml_detected
-S01,Cryptomining: 300 RunInstances in under an hour,False
-S02,Root account used for 5 actions,False
-S03,Attacker stops and deletes CloudTrail,False
-S04,80 AccessDenied errors in one hour,False
-S05,25 different recon calls in one hour,False
-S06,Low-and-slow cryptomining (20 launches over 10 hours),False
-S07,Persistence: new user and access key created,False
-S08,EBS snapshot shared publicly,False
-S09,Privilege escalation: AdministratorAccess attached,False
-S10,Console login without MFA,False
+id,scenario,score,percentile,ml_detected
+S01,Cryptomining: 300 RunInstances in under an hour,0.62,96.4,False
+S02,Root account used for 5 actions,0.477,77.9,False
+S03,Attacker stops and deletes CloudTrail,0.509,83.6,False
+S04,80 AccessDenied errors in one hour,0.593,94.3,False
+S05,25 different recon calls in one hour,0.617,96.2,False
+S06,Low-and-slow cryptomining (20 launches over 10 hours),0.456,63.7,False
+S07,Persistence: new user and access key created,0.509,83.6,False
+S08,EBS snapshot shared publicly,0.415,34.5,False
+S09,Privilege escalation: AdministratorAccess attached,0.415,34.5,False
+S10,Console login without MFA,0.415,34.5,False
