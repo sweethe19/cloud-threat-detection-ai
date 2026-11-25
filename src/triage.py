@@ -35,7 +35,7 @@ def build_incident(ip, ev, a):
     }
 
 
-def ask(incident):
+def ask(incident, tries=2):
     body = {
         "model": MODEL, "stream": False, "format": "json",
         "options": {"temperature": 0},
@@ -45,6 +45,18 @@ def ask(incident):
              "content": "Triage this incident:\n" + json.dumps(incident, indent=2)},
         ],
     }
+    req = urllib.request.Request(
+        URL, data=json.dumps(body).encode(),
+        headers={"Content-Type": "application/json"})
+    err = None
+    for _ in range(tries):
+        try:
+            with urllib.request.urlopen(req, timeout=900) as r:
+                return json.loads(json.loads(r.read())["message"]["content"])
+        except Exception as e:
+            err = e
+    return {"error": str(err)}
+
     req = urllib.request.Request(
         URL, data=json.dumps(body).encode(),
         headers={"Content-Type": "application/json"})

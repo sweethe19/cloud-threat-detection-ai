@@ -1,0 +1,664 @@
+[
+  {
+    "ip": "203.0.113.1",
+    "synthetic": true,
+    "incident": {
+      "source_ip": "203.0.113.1",
+      "first_seen": "2020-10-08 10:00:00+00:00",
+      "last_seen": "2020-10-08 10:49:50+00:00",
+      "total_events": 300,
+      "rules_fired": [
+        "Mass RunInstances from one source",
+        "RunInstances volume per day from one source"
+      ],
+      "attack_ids": [
+        "T1496.001"
+      ],
+      "top_events": {
+        "RunInstances": 300
+      },
+      "identities": [
+        "svc-build"
+      ],
+      "user_agents": [
+        "aws-cli/2.0"
+      ],
+      "error_rate": 0.0
+    },
+    "output": {
+      "error": "HTTP Error 500: Internal Server Error"
+    },
+    "invalid_attack_ids": []
+  },
+  {
+    "ip": "203.0.113.2",
+    "synthetic": true,
+    "incident": {
+      "source_ip": "203.0.113.2",
+      "first_seen": "2020-10-08 10:00:00+00:00",
+      "last_seen": "2020-10-08 10:04:00+00:00",
+      "total_events": 5,
+      "rules_fired": [
+        "Root account used"
+      ],
+      "attack_ids": [
+        "T1078.004"
+      ],
+      "top_events": {
+        "GetAccountSummary": 1,
+        "ListAccessKeys": 1,
+        "ListBuckets": 1,
+        "ListUsers": 1,
+        "DescribeInstances": 1
+      },
+      "identities": [
+        "arn:aws:iam::111111111111:root"
+      ],
+      "user_agents": [
+        "aws-cli/2.0"
+      ],
+      "error_rate": 0.0
+    },
+    "output": {
+      "verdict": "escalate",
+      "severity": "high",
+      "summary": "Root account used to access multiple AWS services, indicating potential unauthorized access. Further investigation is required to determine the cause and scope of the incident.",
+      "attack_ids": [
+        "T1078.004"
+      ],
+      "actions": [
+        "Review AWS IAM access logs for the root account",
+        "Check for any recent changes to IAM policies or access keys",
+        "Verify the integrity of the AWS account and its resources"
+      ]
+    },
+    "invalid_attack_ids": []
+  },
+  {
+    "ip": "203.0.113.3",
+    "synthetic": true,
+    "incident": {
+      "source_ip": "203.0.113.3",
+      "first_seen": "2020-10-08 10:00:00+00:00",
+      "last_seen": "2020-10-08 10:01:00+00:00",
+      "total_events": 2,
+      "rules_fired": [
+        "CloudTrail logging modified or stopped"
+      ],
+      "attack_ids": [
+        "T1562.008"
+      ],
+      "top_events": {
+        "StopLogging": 1,
+        "DeleteTrail": 1
+      },
+      "identities": [
+        "dev-temp"
+      ],
+      "user_agents": [
+        "aws-cli/2.0"
+      ],
+      "error_rate": 0.0
+    },
+    "output": {
+      "verdict": "investigate",
+      "severity": "high",
+      "summary": "CloudTrail logging was modified or stopped by an AWS CLI user, indicating potential unauthorized access.",
+      "attack_ids": [
+        "T1562.008"
+      ],
+      "actions": [
+        "Verify the identity of the user 'dev-temp' and check for any suspicious activity.",
+        "Review the CloudTrail logs for any other suspicious events around the same time.",
+        "Check the IAM permissions of the user 'dev-temp' to ensure they have the necessary permissions."
+      ]
+    },
+    "invalid_attack_ids": []
+  },
+  {
+    "ip": "203.0.113.4",
+    "synthetic": true,
+    "incident": {
+      "source_ip": "203.0.113.4",
+      "first_seen": "2020-10-08 10:00:00+00:00",
+      "last_seen": "2020-10-08 10:39:30+00:00",
+      "total_events": 80,
+      "rules_fired": [
+        "Burst of access-denied errors"
+      ],
+      "attack_ids": [
+        "T1580"
+      ],
+      "top_events": {
+        "GetObject": 80
+      },
+      "identities": [
+        "contractor"
+      ],
+      "user_agents": [
+        "aws-cli/2.0"
+      ],
+      "error_rate": 1.0
+    },
+    "output": {
+      "verdict": "investigate",
+      "severity": "high",
+      "summary": "A contractor's AWS CLI was used to make 80 GetObject requests in a short period, resulting in a burst of access-denied errors.",
+      "attack_ids": [
+        "T1580"
+      ],
+      "actions": [
+        "Review the contractor's access permissions and ensure they have the necessary permissions for the affected bucket.",
+        "Check the AWS CLI version and configuration used by the contractor to identify potential vulnerabilities.",
+        "Monitor the affected bucket for further suspicious activity and consider implementing additional security measures."
+      ]
+    },
+    "invalid_attack_ids": []
+  },
+  {
+    "ip": "203.0.113.5",
+    "synthetic": true,
+    "incident": {
+      "source_ip": "203.0.113.5",
+      "first_seen": "2020-10-08 10:00:00+00:00",
+      "last_seen": "2020-10-08 10:24:00+00:00",
+      "total_events": 25,
+      "rules_fired": [
+        "Many different recon calls in one hour"
+      ],
+      "attack_ids": [
+        "T1580"
+      ],
+      "top_events": {
+        "ListUsers": 1,
+        "ListRoles": 1,
+        "ListBuckets": 1,
+        "ListFunctions": 1,
+        "DescribeInstances": 1
+      },
+      "identities": [
+        "stolen-key"
+      ],
+      "user_agents": [
+        "aws-cli/2.0"
+      ],
+      "error_rate": 0.0
+    },
+    "output": {
+      "verdict": "investigate",
+      "severity": "high",
+      "summary": "AWS CloudTrail alert triggered by 25 events in 24 minutes, including ListUsers, ListRoles, and DescribeInstances, indicating potential reconnaissance activity.",
+      "attack_ids": [
+        "T1580"
+      ],
+      "actions": [
+        "Review the IAM user 'stolen-key' for any suspicious activity",
+        "Check the AWS CLI version and configuration for the user 'stolen-key'",
+        "Verify the security group and network access controls for the affected resources"
+      ]
+    },
+    "invalid_attack_ids": []
+  },
+  {
+    "ip": "203.0.113.6",
+    "synthetic": true,
+    "incident": {
+      "source_ip": "203.0.113.6",
+      "first_seen": "2020-10-08 10:00:00+00:00",
+      "last_seen": "2020-10-08 19:30:00+00:00",
+      "total_events": 20,
+      "rules_fired": [
+        "RunInstances volume per day from one source"
+      ],
+      "attack_ids": [
+        "T1496.001"
+      ],
+      "top_events": {
+        "RunInstances": 20
+      },
+      "identities": [
+        "svc-build"
+      ],
+      "user_agents": [
+        "aws-cli/2.0"
+      ],
+      "error_rate": 0.0
+    },
+    "output": {
+      "verdict": "investigate",
+      "severity": "high",
+      "summary": "AWS CloudTrail alert detected 20 RunInstances events from a single source IP (203.0.113.6) within a short period, potentially indicating a compromised AWS account.",
+      "attack_ids": [
+        "T1496.001"
+      ],
+      "actions": [
+        "Review the AWS account's IAM policies and permissions to identify potential vulnerabilities.",
+        "Check the AWS CloudTrail logs for any other suspicious activity related to the compromised account.",
+        "Consider rotating the access keys for the svc-build identity to prevent further unauthorized access."
+      ]
+    },
+    "invalid_attack_ids": []
+  },
+  {
+    "ip": "203.0.113.7",
+    "synthetic": true,
+    "incident": {
+      "source_ip": "203.0.113.7",
+      "first_seen": "2020-10-08 10:00:00+00:00",
+      "last_seen": "2020-10-08 10:01:00+00:00",
+      "total_events": 2,
+      "rules_fired": [
+        "New IAM user, key or password created"
+      ],
+      "attack_ids": [
+        "T1098.001"
+      ],
+      "top_events": {
+        "CreateUser": 1,
+        "CreateAccessKey": 1
+      },
+      "identities": [
+        "alice"
+      ],
+      "user_agents": [
+        "aws-cli/2.0"
+      ],
+      "error_rate": 0.0
+    },
+    "output": {
+      "verdict": "investigate",
+      "severity": "high",
+      "summary": "An IAM user 'alice' created a new access key using the AWS CLI on IP 203.0.113.7 within a 1-minute window.",
+      "attack_ids": [
+        "T1098.001"
+      ],
+      "actions": [
+        "Review IAM user 'alice' access keys and permissions",
+        "Check AWS CLI usage and access logs for suspicious activity",
+        "Verify user 'alice' identity and access history"
+      ]
+    },
+    "invalid_attack_ids": []
+  },
+  {
+    "ip": "203.0.113.8",
+    "synthetic": true,
+    "incident": {
+      "source_ip": "203.0.113.8",
+      "first_seen": "2020-10-08 10:00:00+00:00",
+      "last_seen": "2020-10-08 10:00:00+00:00",
+      "total_events": 1,
+      "rules_fired": [
+        "Snapshot or image shared publicly"
+      ],
+      "attack_ids": [
+        "T1537"
+      ],
+      "top_events": {
+        "ModifySnapshotAttribute": 1
+      },
+      "identities": [
+        "bob"
+      ],
+      "user_agents": [
+        "aws-cli/2.0"
+      ],
+      "error_rate": 0.0
+    },
+    "output": {
+      "verdict": "investigate",
+      "severity": "medium",
+      "summary": "Public snapshot shared by user 'bob' using AWS CLI. Investigate user activity and ensure compliance with security policies.",
+      "attack_ids": [
+        "T1537"
+      ],
+      "actions": [
+        "Review user 'bob''s permissions and access controls",
+        "Verify if the shared snapshot was intended for public access",
+        "Monitor user activity for similar incidents"
+      ]
+    },
+    "invalid_attack_ids": []
+  },
+  {
+    "ip": "203.0.113.9",
+    "synthetic": true,
+    "incident": {
+      "source_ip": "203.0.113.9",
+      "first_seen": "2020-10-08 10:00:00+00:00",
+      "last_seen": "2020-10-08 10:00:00+00:00",
+      "total_events": 1,
+      "rules_fired": [
+        "AdministratorAccess policy attached"
+      ],
+      "attack_ids": [
+        "T1098.003"
+      ],
+      "top_events": {
+        "AttachUserPolicy": 1
+      },
+      "identities": [
+        "bob"
+      ],
+      "user_agents": [
+        "aws-cli/2.0"
+      ],
+      "error_rate": 0.0
+    },
+    "output": {
+      "verdict": "investigate",
+      "severity": "high",
+      "summary": "An AdministratorAccess policy was attached to a user, indicating potential privilege escalation. Further investigation is required to determine the source and intent behind this action.",
+      "attack_ids": [
+        "T1098.003"
+      ],
+      "actions": [
+        "Review IAM policy attachments for the affected user",
+        "Check for any suspicious or unauthorized changes to IAM policies",
+        "Verify the identity of the user who attached the policy"
+      ]
+    },
+    "invalid_attack_ids": []
+  },
+  {
+    "ip": "203.0.113.10",
+    "synthetic": true,
+    "incident": {
+      "source_ip": "203.0.113.10",
+      "first_seen": "2020-10-08 10:00:00+00:00",
+      "last_seen": "2020-10-08 10:00:00+00:00",
+      "total_events": 1,
+      "rules_fired": [
+        "Console login without MFA"
+      ],
+      "attack_ids": [
+        "T1078.004"
+      ],
+      "top_events": {
+        "ConsoleLogin": 1
+      },
+      "identities": [
+        "carol"
+      ],
+      "user_agents": [
+        "aws-cli/2.0"
+      ],
+      "error_rate": 0.0
+    },
+    "output": {
+      "verdict": "investigate",
+      "severity": "high",
+      "summary": "An unauthorized user, carol, logged in to the AWS console without MFA from IP address 203.0.113.10 using the AWS CLI.",
+      "attack_ids": [
+        "T1078.004"
+      ],
+      "actions": [
+        "Verify the identity of the user 'carol' and check for any MFA configuration issues.",
+        "Review the AWS CLI configuration and ensure it is not compromised.",
+        "Check the AWS IAM policies for any potential misconfigurations that may have allowed this login."
+      ]
+    },
+    "invalid_attack_ids": []
+  },
+  {
+    "ip": "5.205.62.253",
+    "synthetic": false,
+    "incident": {
+      "source_ip": "5.205.62.253",
+      "first_seen": "2019-08-21 07:41:17+00:00",
+      "last_seen": "2019-08-24 00:49:37+00:00",
+      "total_events": 1321919,
+      "rules_fired": [
+        "Burst of access-denied errors",
+        "Mass RunInstances from one source",
+        "RunInstances volume per day from one source"
+      ],
+      "attack_ids": [
+        "T1496.001",
+        "T1580"
+      ],
+      "top_events": {
+        "RunInstances": 1299186,
+        "GetCallerIdentity": 4697,
+        "DescribeInstances": 4684,
+        "CreateDefaultVpc": 4565,
+        "DescribeKeyPairs": 4378
+      },
+      "identities": [
+        "Level6",
+        "backup"
+      ],
+      "user_agents": [
+        "Boto3/1.9.201 Python/2.7.12 Linux/4.4.0-157-generic Botocore/1.12.201",
+        "[Boto3/1.9.201 Python/2.7.12 Linux/4.4.0-157-generic Botocore/1.12.201]"
+      ],
+      "error_rate": 0.99
+    },
+    "output": {
+      "verdict": "escalate",
+      "severity": "high",
+      "summary": "A high-severity incident has been detected, with a burst of access-denied errors and mass RunInstances activity from a single source IP. The error rate is extremely high at 99%.",
+      "attack_ids": [
+        "T1496.001",
+        "T1580"
+      ],
+      "actions": [
+        "Block the source IP 5.205.62.253 to prevent further activity",
+        "Review the identities 'Level6' and 'backup' to determine if they are legitimate",
+        "Investigate the user agents to determine if they are legitimate or part of a botnet"
+      ]
+    },
+    "invalid_attack_ids": []
+  },
+  {
+    "ip": "255.253.125.115",
+    "synthetic": false,
+    "incident": {
+      "source_ip": "255.253.125.115",
+      "first_seen": "2017-02-12 19:57:06+00:00",
+      "last_seen": "2017-07-17 16:20:57+00:00",
+      "total_events": 30197,
+      "rules_fired": [
+        "AdministratorAccess policy attached",
+        "Burst of access-denied errors",
+        "Console login without MFA",
+        "Many different recon calls in one hour",
+        "New IAM user, key or password created",
+        "Root account used",
+        "Snapshot or image shared publicly"
+      ],
+      "attack_ids": [
+        "T1078.004",
+        "T1098.001",
+        "T1098.003",
+        "T1537",
+        "T1580"
+      ],
+      "top_events": {
+        "AssumeRole": 4526,
+        "GetPolicyVersion": 3980,
+        "ListEntitiesForPolicy": 2874,
+        "GetBucketLocation": 683,
+        "DescribeTrails": 602
+      },
+      "identities": [
+        "arn:aws:iam::811596193553:root",
+        "backup",
+        "Level5"
+      ],
+      "user_agents": [
+        "[S3Console/0.4]",
+        "console.amazonaws.com"
+      ],
+      "error_rate": 0.07
+    },
+    "output": {
+      "verdict": "escalate",
+      "severity": "high",
+      "summary": "A prolonged period of suspicious activity has been detected, including AdministratorAccess policy attachment, console login without MFA, and root account usage. The activity spans 5 months and involves multiple IAM users and AWS services.",
+      "attack_ids": [
+        "T1078.004",
+        "T1098.001",
+        "T1098.003",
+        "T1537",
+        "T1580"
+      ],
+      "actions": [
+        "Review IAM user and role permissions to identify potential security issues",
+        "Enable MFA for all IAM users and root account",
+        "Rotate AWS access keys and review usage"
+      ]
+    },
+    "invalid_attack_ids": []
+  },
+  {
+    "ip": "155.63.17.217",
+    "synthetic": false,
+    "incident": {
+      "source_ip": "155.63.17.217",
+      "first_seen": "2018-04-16 06:59:18+00:00",
+      "last_seen": "2018-04-18 04:58:49+00:00",
+      "total_events": 15925,
+      "rules_fired": [
+        "Burst of access-denied errors",
+        "Mass RunInstances from one source",
+        "RunInstances volume per day from one source"
+      ],
+      "attack_ids": [
+        "T1496.001",
+        "T1580"
+      ],
+      "top_events": {
+        "RunInstances": 8431,
+        "DescribeInstances": 5510,
+        "CreateDefaultVpc": 1799,
+        "GetCallerIdentity": 181,
+        "GetSessionToken": 1
+      },
+      "identities": [
+        "backup"
+      ],
+      "user_agents": [
+        "Boto3/1.7.4 Python/2.7.12 Linux/4.4.0-119-generic Botocore/1.10.4",
+        "[Boto3/1.7.4 Python/2.7.12 Linux/4.4.0-119-generic Botocore/1.10.4]"
+      ],
+      "error_rate": 0.64
+    },
+    "output": {
+      "verdict": "escalate",
+      "severity": "high",
+      "summary": "A high-volume AWS API activity has been detected from a single source IP, with a burst of access-denied errors and mass RunInstances activity.",
+      "attack_ids": [
+        "T1496.001",
+        "T1580"
+      ],
+      "actions": [
+        "Review the AWS IAM policies and permissions for the 'backup' identity to determine if they have been compromised.",
+        "Check the AWS CloudTrail logs for any signs of lateral movement or other malicious activity.",
+        "Consider implementing additional logging and monitoring to detect similar activity in the future."
+      ]
+    },
+    "invalid_attack_ids": []
+  },
+  {
+    "ip": "255.171.1.252",
+    "synthetic": false,
+    "incident": {
+      "source_ip": "255.171.1.252",
+      "first_seen": "2020-04-10 14:58:21+00:00",
+      "last_seen": "2020-09-22 14:18:26+00:00",
+      "total_events": 9780,
+      "rules_fired": [
+        "Burst of access-denied errors",
+        "Many different recon calls in one hour"
+      ],
+      "attack_ids": [
+        "T1580"
+      ],
+      "top_events": {
+        "GetPolicyVersion": 386,
+        "GetCallerIdentity": 377,
+        "DescribeTrails": 285,
+        "ListRolePolicies": 198,
+        "DescribeVpcs": 195
+      },
+      "identities": [
+        "backup",
+        "arn:aws:sts::811596193553:assumed-role/flaws/i-aa2d3b42e5c6e801a",
+        "Level6"
+      ],
+      "user_agents": [
+        "aws-cli/1.18.31 Python/3.8.2 Linux/4.9.184-linuxkit botocore/1.15.31",
+        "[aws-cli/1.18.31 Python/3.8.2 Linux/4.9.184-linuxkit botocore/1.15.31]"
+      ],
+      "error_rate": 0.38
+    },
+    "output": {
+      "verdict": "investigate",
+      "severity": "high",
+      "summary": "A prolonged period of access-denied errors and reconnaissance calls has been detected from a single IP address, indicating potential unauthorized access to AWS resources.",
+      "attack_ids": [
+        "T1580"
+      ],
+      "actions": [
+        "Review the AWS IAM policies and permissions for the affected resources",
+        "Check the AWS CloudTrail logs for any other suspicious activity",
+        "Verify the identity of the user or role that made the access-denied errors"
+      ]
+    },
+    "invalid_attack_ids": []
+  },
+  {
+    "ip": "250.251.253.3",
+    "synthetic": false,
+    "incident": {
+      "source_ip": "250.251.253.3",
+      "first_seen": "2018-07-05 18:49:34+00:00",
+      "last_seen": "2018-08-06 17:30:33+00:00",
+      "total_events": 1786,
+      "rules_fired": [
+        "Many different recon calls in one hour",
+        "New IAM user, key or password created",
+        "Root account used"
+      ],
+      "attack_ids": [
+        "T1078.004",
+        "T1098.001",
+        "T1580"
+      ],
+      "top_events": {
+        "GetTrailStatus": 112,
+        "GetBucketEncryption": 105,
+        "DescribeStacks": 102,
+        "GetBucketAcl": 95,
+        "DescribeTrails": 82
+      },
+      "identities": [
+        "arn:aws:iam::811596193553:root",
+        "flaws",
+        "piper"
+      ],
+      "user_agents": [
+        "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_5) AppleWebKit/537.36 (KHTML, like ",
+        "signin.amazonaws.com"
+      ],
+      "error_rate": 0.11
+    },
+    "output": {
+      "verdict": "escalate",
+      "severity": "high",
+      "summary": "Multiple suspicious AWS API calls from a single IP address over a prolonged period, including IAM user creation and root account usage.",
+      "attack_ids": [
+        "T1078.004",
+        "T1098.001",
+        "T1580"
+      ],
+      "actions": [
+        "Review IAM user creation and root account usage logs for the past 30 days.",
+        "Check for any new IAM users, keys, or passwords created recently.",
+        "Verify the identity of the user 'flaws' and 'piper' and their access permissions."
+      ]
+    },
+    "invalid_attack_ids": []
+  }
+]
