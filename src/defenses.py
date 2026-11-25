@@ -16,6 +16,14 @@ UNTRUSTED = ["identities", "user_agents"]
 IAM_NAME = re.compile(r"^[A-Za-z0-9+=,.@_-]{1,64}$")
 ARN = re.compile(r"^arn:aws:[a-z0-9-]*:[a-z0-9-]*:\d{12}:[A-Za-z0-9+=,.@_/:-]{1,200}$")
 
+PRINCIPAL_ID = re.compile(r"^A[A-Z0-9]{15,127}:[A-Za-z0-9+=,.@_-]{2,64}$")
+
+
+def is_valid_identity(name):
+    name = str(name)
+    return (name in ("", "None", "nan") or bool(IAM_NAME.match(name))
+            or bool(ARN.match(name)) or bool(PRINCIPAL_ID.match(name)))
+
 UA_FAMILIES = [
     ("aws-cli", r"aws-cli/"),
     ("boto3/botocore", r"[Bb]oto3/|botocore/"),
@@ -44,7 +52,7 @@ def sanitize_incident(inc):
     inc = dict(inc)
     clean, flagged = [], False
     for name in inc.get("identities", []):
-        if IAM_NAME.match(name) or ARN.match(name):
+        if is_valid_identity(name):
             clean.append(name)
         else:
             clean.append("[removed: not a valid AWS identity name]")
